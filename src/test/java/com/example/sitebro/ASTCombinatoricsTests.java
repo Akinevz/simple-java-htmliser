@@ -8,7 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import com.example.sitebro.ast.*;
 
 @SpringBootTest
-class ASTCombinatorics {
+class ASTCombinatoricsTests {
     @Test
     public void combine() {
         ASTLeaf a = () -> "a";

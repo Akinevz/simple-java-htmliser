@@ -6,7 +6,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import com.example.sitebro.ast.*;
 
 @SpringBootTest
-public class ASTFormatting {
+public class ASTFormattingTests {
 
     @Test
     void testNested() {
