@@ -19,4 +19,9 @@ public class ASTTextContent implements ASTLeaf {
         return text;
     }
 
+    @Override
+    public String toString() {
+        return "ASTTextContent [" + text + "]";
+    }
+
 }

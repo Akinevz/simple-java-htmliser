@@ -14,4 +14,10 @@ public class ASTTagClosing implements ASTLeaf {
         final var closing = String.format("</%s>", name);
         return closing;
     }
+
+    @Override
+    public String toString() {
+        return "ASTTagClosing [" + name + "]";
+    }
+    
 }

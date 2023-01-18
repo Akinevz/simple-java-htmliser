@@ -1,16 +1,10 @@
 package com.example.sitebro;
 
-import java.util.ArrayList;
 import java.util.Properties;
 
-import com.example.sitebro.ast.ASTFormatter;
-import com.example.sitebro.ast.ASTLeaf;
+import com.example.sitebro.ast.Formatter;
 
 public class Tag {
-
-    public static ASTLeaf prependSpace(String arg0) {
-        return () -> " " + arg0;
-    }
 
     private Tag[] children;
 
@@ -46,10 +40,6 @@ public class Tag {
         return this;
     }
 
-    public String repr() {
-        return repr(Integer.MAX_VALUE);
-    }
-
     public Tag setChildren(Tag... tag) {
         this.children = tag;
         return this;
@@ -83,34 +73,8 @@ public class Tag {
         return textContent;
     }
 
-    public String repr(int depth) {
-        return new ASTFormatter(0, depth, this).tree().content();
+    public String repr() {
+        return new Formatter(this).content();
     }
 
-    // public static class TagFormatter {
-
-    // private String padding;
-    // private ArrayList<String> lines;
-    // private String result;
-
-    // public TagFormatter(int depth, String opening, Tag[] children, String
-    // closing) {
-    // this.padding = Stream.generate(() -> "\t").limit(depth).reduce("", (a, b) ->
-    // a + b);
-    // this.lines = new ArrayList<String>();
-    // this.lines.add(padding + opening);
-    // for (Tag childTag : children) {
-    // this.lines.add(childTag.repr(depth + 1));
-    // }
-    // this.lines.add(padding + closing);
-    // this.result = lines.stream().filter(s -> !s.isBlank()).reduce("", (a, b) -> a
-    // + "\n" + b);
-    // }
-
-    // @Override
-    // public String toString() {
-    // return this.result;
-    // }
-
-    // }
 }

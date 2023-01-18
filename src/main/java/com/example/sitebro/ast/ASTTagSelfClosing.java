@@ -19,10 +19,16 @@ public class ASTTagSelfClosing implements ASTLeaf {
     public String content() {
         final var properties = Optional.ofNullable(props)
                 .map(Prop::format)
-                .map(Tag::prependSpace)
+                .map(ASTLeaf::prependSpace)
                 .map(ASTLeaf::content)
                 .orElse("");
         final var selfClosing = String.format("<%s%s />", name, properties);
         return selfClosing;
     }
+
+    @Override
+    public String toString() {
+        return "ASTTagSelfClosing [" + name + "]";
+    }
+    
 }

@@ -7,4 +7,9 @@ public class ASTNewLine implements ASTLeaf {
         return "\n";
     }
 
+    @Override
+    public String toString() {
+        return "ASTNewLine []";
+    }
+
 }

@@ -7,4 +7,9 @@ public class ASTWhiteSpace implements ASTLeaf {
         return " ";
     }
 
+    @Override
+    public String toString() {
+        return "ASTWhiteSpace []";
+    }
+
 }
