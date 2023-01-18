@@ -1,6 +1,5 @@
 package com.example.sitebro;
 
-import java.text.ParseException;
 import java.util.Properties;
 
 import com.example.sitebro.ast.ASTLeaf;
@@ -20,7 +19,7 @@ public class Prop {
         return a + " " + b;
     }
 
-    public static Properties parse(String... props) throws ParseException {
+    public static Properties parse(String... props) {
         Properties result = new Properties();
         for (String string : props) {
             var parts = string.split("=", 2);
@@ -34,11 +33,7 @@ public class Prop {
     }
 
     public static Properties of(String string) {
-        try {
-            return parse(string);
-        } catch (ParseException e) {
-            return null;
-        }
+        return parse(string);
     }
 
 }
