@@ -2,6 +2,7 @@ package com.example.sitebro;
 
 import java.util.Properties;
 
+import com.example.sitebro.ast.ASTTag;
 import com.example.sitebro.ast.Formatter;
 
 public class Tag {
@@ -23,11 +24,6 @@ public class Tag {
         this.tagName = tagName;
         this.children = children;
         this.properties = props;
-    }
-
-    @Override
-    public String toString() {
-        return this.repr();
     }
 
     public Tag with(Tag... children) {
@@ -73,8 +69,13 @@ public class Tag {
         return textContent;
     }
 
-    public String repr() {
-        return new Formatter(this).content();
+    public ASTTag repr() {
+        return new ASTTag(this);
+    }
+
+    @Override
+    public String toString() {
+        return new Formatter(repr()).content();
     }
 
 }
