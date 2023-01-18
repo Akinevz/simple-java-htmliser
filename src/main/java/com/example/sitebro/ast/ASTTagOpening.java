@@ -20,6 +20,14 @@ public class ASTTagOpening implements ASTLeaf {
         this(t.getTagName(), t.getProperties());
     }
 
+    public String getTagName(){
+        return this.name;
+    }
+
+    public String getTagId() {
+        return this.props.map(s->s.getProperty("id")).orElse(null);
+    }
+
     @Override
     public String content() {
         final var optionalProps = props

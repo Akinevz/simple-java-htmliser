@@ -5,12 +5,17 @@ import java.util.stream.Stream;
 import com.example.sitebro.Tag;
 
 public class Formatter implements ASTTree {
-    final private Tag root;
+
+    final private ASTTag rootNode;
 
     final static private ASTLeaf newline = new ASTNewLine();
 
     public Formatter(Tag root) {
-        this.root = root;
+        this.rootNode = new ASTTag(root);
+    }
+
+    public Formatter(ASTTag root) {
+        this.rootNode = root;
     }
 
     protected Stream<ASTLeaf> recurse(int depth, ASTTree r) {
@@ -23,13 +28,10 @@ public class Formatter implements ASTTree {
 
     @Override
     public ASTLeaf[] children() {
-
-        final ASTTree rootNode = new ASTTag(root);
-
-        // final ASTTree flattened = new ASTFlattener(clean);
-        // final ASTTree formatted = new ASTFormatted(0, rootNode);
-
-        return recurse(0, rootNode).dropWhile(s -> (s instanceof ASTNewLine n)).toArray(ASTLeaf[]::new);
+        return recurse(0, rootNode)
+                // drop the leading newline
+                .dropWhile(s -> (s instanceof ASTNewLine n))
+                .toArray(ASTLeaf[]::new);
     }
 
 }
