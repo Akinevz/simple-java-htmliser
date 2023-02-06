@@ -1,11 +1,11 @@
 package com.example.sitebro.ast;
 
-import com.example.sitebro.Tag;
+import com.example.sitebro.TagNode;
 
 public class ASTTagClosing implements ASTLeaf {
     final private String name;
 
-    public ASTTagClosing(Tag t) {
+    public ASTTagClosing(TagNode t) {
         this.name = t.getTagName();
     }
 

@@ -1,28 +1,36 @@
 package com.example.sitebro.ast;
 
 import java.util.Optional;
-import java.util.Properties;
+import java.util.stream.Stream;
 
-import com.example.sitebro.Prop;
-import com.example.sitebro.Tag;
+import org.jsoup.nodes.Attributes;
 
-public class ASTTagSelfClosing implements ASTLeaf {
+import com.example.sitebro.TagNode;
+
+public class ASTTagSelfClosing implements ASTTree {
+
     private String name;
-    private Properties props;
+    private Optional<Attributes> attr;
 
-    public ASTTagSelfClosing(Tag t) {
-        this.name = t.getTagName();
-        this.props = t.getProperties();
+    public ASTTagSelfClosing(String tagName, Attributes attributes) {
+        this.name = tagName;
+        this.attr = Optional.ofNullable(attributes);
+    }
+
+    public ASTTagSelfClosing(TagNode t) {
+        this(t.getTagName(), t.getAttributes());
+    }
+
+    private Optional<ASTLeaf> attributes() {
+        return this.attr.map(ASTTagAttributes::new);
     }
 
     @Override
     public String content() {
-        final var properties = Optional.ofNullable(props)
-                .map(Prop::format)
-                .map(ASTLeaf::prependSpace)
-                .map(ASTLeaf::content)
-                .orElse("");
-        final var selfClosing = String.format("<%s%s />", name, properties);
+        final var optionalProps = attributes()
+                .map(s -> (ASTTree) () -> new ASTLeaf[] { ASTWhitespace.space, s })
+                .map(ASTTree::content).orElse("");
+        final var selfClosing = String.format("<%s%s />", name, optionalProps);
         return selfClosing;
     }
 
@@ -30,5 +38,13 @@ public class ASTTagSelfClosing implements ASTLeaf {
     public String toString() {
         return "ASTTagSelfClosing [" + name + "]";
     }
-    
+
+    @Override
+    public ASTLeaf[] children() {
+        Optional<ASTLeaf> nameNode = Optional.of(() -> name);
+        return Stream.of(nameNode, attributes())
+                .flatMap(s -> s.map(Stream::of).orElseGet(Stream::empty))
+                .toArray(ASTLeaf[]::new);
+    }
+
 }

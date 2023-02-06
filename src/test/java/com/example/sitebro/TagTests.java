@@ -1,51 +1,50 @@
 package com.example.sitebro;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import java.text.ParseException;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.example.sitebro.ast.ASTPrinter;
 import com.example.sitebro.ast.ASTTag;
-import com.example.sitebro.ast.Formatter;
 
 @SpringBootTest
 class TagTests {
 
 	@Test
 	void testEmpty() {
-		var emptyTag = new Tag("html");
+		var emptyTag = new TagNode("html");
 		System.out.println(emptyTag.repr());
 	}
 
 	@Test
 	void testSimple() throws ParseException {
-		var headTag = new Tag("head");
-		var div = Tags.div("hello world", Prop.parse("style=background-color:red;"));
-		var bodyTag = new Tag("body", div);
-		var tag = new Tag("html", headTag, bodyTag);
+		var headTag = new TagNode("head");
+		var div = Tags.div("hello world", Tags.attr("style=background-color:red;"));
+		var bodyTag = new TagNode("body", div);
+		var tag = new TagNode("html", headTag, bodyTag);
 		System.out.println(tag.repr());
 	}
 
 	@Test
 	void testSimpler() {
-		var emptyTag = new Tag("html");
-		var headOnly = emptyTag.setChildren(new Tag("head"),
-				new Tag("body").setChildren(Tags.div("hello world", null)));
+		var emptyTag = new TagNode("html");
+		var headOnly = emptyTag.with(
+				new TagNode("head"),
+				new TagNode("body").with(
+						Tags.div("hello world", null)));
 		System.out.println(headOnly.repr());
 	}
 
 	@Test
 	void testTree() {
-		var html = new Tag("html").with(
-				new Tag("head"),
-				new Tag("body").with(
-						Tags.div("Hello world", Prop.of("id=key")).with(
-								Tags.div("childNested", Prop.of("id=child")))));
+		var head = new TagNode("head");
+		var body = new TagNode("body").with(
+				Tags.div("Hello world", Tags.attr("id=key")).with(
+						Tags.div("childNested", Tags.attr("id=child"))));
 
-		var comp = new Formatter(html);
+		var html = new TagNode("html").with(head, body);
+
+		var comp = new com.example.sitebro.ast.ASTFormatter(new ASTTag(html));
 		// System.out.println(new ASTPrinter(comp));
 		System.out.println(comp.content());
 	}

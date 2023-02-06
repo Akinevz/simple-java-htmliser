@@ -1,4 +1,4 @@
-package com.example.exceptions;
+package com.example.sitebro.exceptions;
 
 import com.example.sitebro.ast.ASTLeaf;
 

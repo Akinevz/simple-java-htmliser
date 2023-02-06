@@ -2,8 +2,8 @@ package com.example.sitebro;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.util.List;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 
 import com.example.sitebro.ast.ASTTree;
 
@@ -11,15 +11,14 @@ import lombok.NonNull;
 
 public class ResourceFile {
 
-    private List<String> content;
+    private Document content;
 
     public ResourceFile(File f) throws IOException {
-        this.content = Files.readAllLines(f.toPath());
+        this.content = Jsoup.parse(f);
     }
     
     @NonNull
     public ASTTree read() {
-        
-        return null;
+        return new HTMLParser(content);
     }
 }

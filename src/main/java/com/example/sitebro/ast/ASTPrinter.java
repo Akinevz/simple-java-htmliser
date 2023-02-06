@@ -3,7 +3,7 @@ package com.example.sitebro.ast;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
-import com.example.sitebro.Tag;
+import com.example.sitebro.TagNode;
 
 public class ASTPrinter {
 
@@ -19,25 +19,26 @@ public class ASTPrinter {
         this(tree, 0);
     }
 
-    public ASTPrinter(Tag html) {
+    public ASTPrinter(TagNode html) {
         this(new ASTTag(html));
     }
 
     @Override
     public String toString() {
         ASTLeaf[] children = tree.children();
+        if (children == null)
+            return "Tree<>";
         if (children.length == 0)
-            return tree.getClass().getSimpleName();
+            return tree.content();
         Function<ASTLeaf, String> recurse = s -> (s instanceof ASTTree tree)
-                ? new ASTPrinter(tree, depth+1).toString()
-                : s.getClass().getSimpleName();
-        return "Tree<\n" + Stream.of(children).map(recurse).map(s -> {
-            return Stream
-                    .generate(() -> Character.toString(' '))
-                    .limit(depth+1)
-                    .reduce(String::concat)
-                    .orElse("") + s;
-        }).reduce((x, y) -> x + ",\n" + y).orElse("") + ">";
+                ? new ASTPrinter(tree, depth + 1).toString()
+                : s.content();
+        Function<String, String> padding = s -> Stream.generate(() -> Character.toString(' '))
+                .limit(depth + 1)
+                .reduce(String::concat)
+                .orElseGet(() -> "") + s;
+        return "Tree<" + tree.getClass().getSimpleName() + tree.content().replace("\n", "\\n") + "\n"
+                + Stream.of(children).map(recurse).map(padding).reduce((x, y) -> x + ",\n" + y).orElse("") + ">";
     }
 
 }
