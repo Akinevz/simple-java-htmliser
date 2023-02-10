@@ -53,4 +53,9 @@ public class ASTTag implements ASTTree {
         return this.tag.getAttributes().get("id");
     }
 
+    @Override
+    public String toString() {
+        return "ASTTag[" + Stream.of(children()).map(Object::toString).reduce((a, b) -> a + "," + b).orElse("") + "]";
+    }
+
 }

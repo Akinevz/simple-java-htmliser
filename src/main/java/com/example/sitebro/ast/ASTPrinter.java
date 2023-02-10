@@ -29,15 +29,15 @@ public class ASTPrinter {
         if (children == null)
             return "Tree<>";
         if (children.length == 0)
-            return tree.content();
+            return ">>>"+tree.toString();
         Function<ASTLeaf, String> recurse = s -> (s instanceof ASTTree tree)
                 ? new ASTPrinter(tree, depth + 1).toString()
-                : s.content();
+                : ">>"+s.content();
         Function<String, String> padding = s -> Stream.generate(() -> Character.toString(' '))
                 .limit(depth + 1)
                 .reduce(String::concat)
                 .orElseGet(() -> "") + s;
-        return "Tree<" + tree.getClass().getSimpleName() + tree.content().replace("\n", "\\n") + "\n"
+        return tree.getClass().getSimpleName() + "<" + tree.content().replace("\n", "\\n") + "\n"
                 + Stream.of(children).map(recurse).map(padding).reduce((x, y) -> x + ",\n" + y).orElse("") + ">";
     }
 

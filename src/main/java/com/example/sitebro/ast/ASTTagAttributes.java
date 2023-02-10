@@ -21,4 +21,11 @@ public class ASTTagAttributes implements ASTLeaf {
         return attr.asList().stream().map(attr2String).reduce(commaSeparate).orElse("");
     }
 
+    @Override
+    public String toString() {
+        return "ASTTagAttributes [attr=" + attr + "]";
+    }
+
+
+
 }

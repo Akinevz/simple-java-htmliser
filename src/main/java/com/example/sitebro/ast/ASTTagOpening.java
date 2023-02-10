@@ -42,9 +42,10 @@ public class ASTTagOpening implements ASTTree {
         return opening;
     }
 
+
     @Override
     public String toString() {
-        return "ASTTagOpening [" + name + "]";
+        return "ASTTagOpening [name=" + name + "]";
     }
 
     @Override
